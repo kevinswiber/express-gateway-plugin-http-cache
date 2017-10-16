@@ -1,0 +1,32 @@
+{
+  "name": "express-gateway-plugin-http-cache",
+  "version": "0.1.0",
+  "description": "HTTP-compliant caching middleware for Express Gateway",
+  "main": "manifest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "http",
+    "cache",
+    "express",
+    "gateway"
+  ],
+  "author": "Kevin Swiber <kswiber@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "medea": "^1.0.3",
+    "msgpack-js": "^0.3.0"
+  },
+  "devDependencies": {
+    "express": "^4.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinswiber/express-gateway-plugin-http-cache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kevinswiber/express-gateway-plugin-http-cache/issues"
+  },
+  "homepage": "https://github.com/kevinswiber/express-gateway-plugin-http-cache#readme"
+}
