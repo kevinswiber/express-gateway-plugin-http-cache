@@ -8,7 +8,7 @@ app
   .get('/hello', (req, res) => {
     console.log('in route');
     res.setHeader('Cache-Control', 'public, s-maxage=20');
-    res.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());
+    //res.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());
     res.send('hello world');
   })
   .listen(3000);

@@ -89,7 +89,7 @@ CachingRules.prototype.checkRequest = function(req, res, next) {
       res1.body = match.body;
 
       var expires = CachingRules._calculateExpires(req, res1);
-      var dateHeader = match.response.headers['Date'];
+      var dateHeader = match.response.headers['Date'] || match.response.headers['date'];
       var date = new Date(dateHeader);
       var age = match.response.headers['age'] || 0;
       var responseTime = req.httpCache.responseTime = Date.now();
