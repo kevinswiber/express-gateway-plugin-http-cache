@@ -337,7 +337,6 @@ CachingRules.prototype._checkResponse = function(req, res, next) {
 
   if (res._headerNames) {
     Object.keys(res._headerNames).forEach(function(headerName) {
-        console.log(headerName);
       if (disallowedHeaders.indexOf(headerName) == -1) {
         var val = res.getHeader(headerName);
         responseHeaders[res._headerNames[headerName]] = val;
