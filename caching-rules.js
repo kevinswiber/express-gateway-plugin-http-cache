@@ -126,7 +126,8 @@ CachingRules.prototype.checkRequest = function(req, res, next) {
         req.httpCache.pass = true;
 
         req.httpCache.hit = true;
-        res.end(match.body);
+        res.originalWriteHead.call(res, res.statusCode);
+        res.originalEnd.call(res, match.body);
       }
     }
   });
@@ -212,17 +213,29 @@ function varyMatchIndexOf(entries, req, res) {
 }
 
 CachingRules.prototype.checkResponse = function(req, res) {
-  const savedEnd = res.end;
-
   const self = this;
 
   const chunks = [];
   let size = 0;
   
-  res.write = function(chunk) {
+  let statusCode = undefined;
+  let statusMessage = undefined;
+  let headers = undefined;
+
+  res.originalWriteHead = res.writeHead.bind(res);
+  res.writeHead = function(statusCode, statusMessage, headers) {
+    statusCode = statusCode;
+    statusMessage = statusMessage;
+    headers = headers;
+  };
+
+  res.write = function(chunk, encoding) {
     chunks.push(chunk);
     size += chunk.length;
   };
+
+  const savedEnd = res.end;
+  res.originalEnd = savedEnd;
 
   res.end = function(chunk, encoding) {
     if (chunk) {
@@ -235,6 +248,9 @@ CachingRules.prototype.checkResponse = function(req, res) {
     res.body = Buffer.concat(chunks, size);
 
     function next() {
+      if (statusCode) {
+        res.originalWriteHead.call(res, statusCode, statusMessage, headers);
+      }
       savedEnd.call(res, chunk, encoding);
     }
     self._checkResponse(req, res, next);
@@ -352,7 +368,8 @@ CachingRules.prototype._checkResponse = function(req, res, next) {
     }
 
     req.httpCache.put(req.httpCache.key, msgpack.encode(val), function(err) {
-      next(body);
+      res.originalWriteHead.call(res, res.statusCode);
+      res.originalEnd.call(res, body);
     });
   });
 };
