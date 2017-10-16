@@ -273,7 +273,7 @@ CachingRules.prototype._checkResponse = function(req, res, next) {
   req.httpCache.cacheable = true;
 
   var disallowedHeaders = ['connection', 'keep-alive', 'proxy-authentication', 'proxy-authorization', 'te',
-      'transfer-encoding', 'upgrade'];
+      'transfer-encoding', 'upgrade', 'express-gateway-cache'];
 
   var varyHeader = res.getHeader('vary');
   var setCookieHeader = res.getHeader('set-cookie');
@@ -337,6 +337,7 @@ CachingRules.prototype._checkResponse = function(req, res, next) {
 
   if (res._headerNames) {
     Object.keys(res._headerNames).forEach(function(headerName) {
+        console.log(headerName);
       if (disallowedHeaders.indexOf(headerName) == -1) {
         var val = res.getHeader(headerName);
         responseHeaders[res._headerNames[headerName]] = val;
