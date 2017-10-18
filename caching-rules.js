@@ -392,6 +392,7 @@ CachingRules._calculateExpires = function(req, res) {
   
   var cacheControlValue = cacheControl(cacheControlHeader);
 
+  let expires = 0;
   if (cacheControlValue.sharedMaxAge) {
     expires = cacheControlValue.sharedMaxAge;
   } else if (cacheControlValue.maxAge) {
